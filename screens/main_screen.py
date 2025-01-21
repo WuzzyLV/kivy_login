@@ -23,9 +23,7 @@ class MainWindow(Screen):
         
         for note in notes:
             note_widget = NoteWidget(
-                note_uuid=note["uuid"],
-                note_text=note["note"],
-                note_color=note["color"],
+                note,
                 delete_callback=self.delete_note,
                 edit_callback=self.edit_note
             )
@@ -38,8 +36,17 @@ class MainWindow(Screen):
     def delete_note(self, note_uuid):
         print(f"Deleting note with UUID: {note_uuid}")
         pass
-    def edit_note(self, note_uuid):
-        print(f"Editing note with UUID: {note_uuid}")
+    def edit_note(self, note):
+        screen = self.manager.get_screen('edit_create_note')
+        screen.set_initial_values(note["note"], note["category"], note["color"])
+        screen.note_uuid = note["uuid"]
+        screen.save_callback = self.save_callback
+        self.manager.current = 'edit_create_note'
+        pass
+
+    def save_callback(self, note_uuid, note_text, category, color):
+        print(f"Saving note with UUID: {note_uuid}")
+        print(f"Note text: {note_text}")
         pass
 
     def logout_button(self):

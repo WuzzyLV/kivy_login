@@ -6,24 +6,25 @@
     MainWindow:
         name: 'main'
 
+
 <RoundedTextInput@TextInput>:
     background_color: 0, 0, 0, 0  # Caurspidīgs fons
     halign: 'center'  # Teksta centrēšana (horizontāli)
     valign: 'center'  # Teksta centrēšana (vertikāli)
     padding_y: [self.height / 2.0 - (self.line_height / 2.0) * len(self._lines), 0]  # Atkāpes centrēšanai
-    cursor_color: 0.2, 0.4, 0.8, 1  # Kursora krāsa
+    cursor_color: 0, 0, 0, 1  # Kursora krāsa
     cursor_width: '2sp'  # Kursora biezums
     canvas.before:
         # Fons izvades laukam
         Color:
-            rgba: 1, 1, 1, 1  # Balta krāsa fonam
+            rgba: 1, 1, 1, 0.7  # Balta krāsa fonam
         RoundedRectangle:
             pos: self.pos
             size: self.size
             radius: [15]  # Noapaļoti stūri
         # Fokusa efeks ar rami
         Color:
-            rgba: (0.3, 0.6, 0.9, 1) if self.focus else (0.8, 0.8, 0.8, 1)  # Krāsa fokusam mainās
+            rgba: (0.3, 0.6, 0.9, 1) if self.focus else (0.4, 0.4, 0.4, 1)  # Krāsa fokusam mainās
         Line:
             rounded_rectangle: (self.x, self.y, self.width, self.height, 15)
             width: 1.5 if self.focus else 1.2  # Ramja biezuma maiņa kad ir fokusēts
@@ -166,7 +167,7 @@
         Label:
             text: root.welcome_text
             pos_hint: {"x": 0, "top": 0.95}
-            size_hint: 1, 0.15
+            size_hint: 1, 0.05
             font_size: min(root.width, root.height) * 0.06
             color: 0.2, 0.4, 0.8, 1
             bold: True

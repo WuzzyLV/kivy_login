@@ -14,12 +14,15 @@ class NoteWidget(BoxLayout):
     note_text = StringProperty("")
     note_color = StringProperty("#FFFFFF")
 
-    def __init__(self, note_uuid, note_text, note_color, delete_callback, edit_callback, **kwargs):
+    def __init__(self, note, delete_callback, edit_callback, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'horizontal'
-        self.note_uuid = note_uuid
-        self.note_text = note_text
-        self.note_color = note_color
+        self.note = note
+        self.note_uuid = note["uuid"]
+        self.note_text = note["note"]
+        self.note_color = note["color"]
+        self.created_at = note["created_at"]
+        self.category = note["category"]
         self.delete_callback = delete_callback
         self.edit_callback = edit_callback
 
@@ -29,8 +32,8 @@ class NoteWidget(BoxLayout):
 
     def on_edit(self):
         """Handle the edit button click."""
-        self.show_edit_popup()
-
+        self.edit_callback(self.note )
+        
     def show_edit_popup(self):
         """Show a popup for editing the note."""
         content = FloatLayout()

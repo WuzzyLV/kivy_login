@@ -1,0 +1,60 @@
+#:kivy 1.0
+
+<EditCreateNoteScreen>:
+    FloatLayout:
+        padding: dp(20)
+
+        RoundedTextInput:
+            id: note_input
+            hint_text: "Enter your note"
+            multiline: True
+            size_hint: 0.9, 0.3
+            pos_hint: {"center_x": 0.5, "top": 0.75}
+
+        MDDropDownItem:
+            id: category_dropdown
+            text: "Select Category"
+            size_hint: 0.6, None
+            height: dp(40)
+            pos_hint: {"center_x": 0.5, "top": 0.4}
+            on_release: app.open_category_menu()
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: 0.9, 0.1
+            pos_hint: {"center_x": 0.5, "top": 0.35}
+            spacing: dp(10)
+
+            RoundedTextInput:
+                id: color_picker
+                hint_text: "like: #FFFFFF"
+                multiline: False
+                size_hint: 0.6, None
+                height: dp(40)
+                # pos_hint: {"x": 0.1, "top": 0.6}
+                on_text: root.validate_color_input(self, self.text)
+
+            Widget:
+                id: color_box
+                size_hint: 0.1, 0.6
+                # pos_hint: {"x": 0.75, "top": 0.6}
+                canvas.before:
+                    Color:
+                        rgba: (1, 1, 1, 1)
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+        RoundedButton:
+            text: "Save"
+            size_hint: 0.4, None
+            height: dp(50)
+            pos_hint: {"x": 0.05, "top": 0.1}
+            on_release: root.save_note()
+
+        RoundedButton:
+            text: "Cancel"
+            size_hint: 0.4, None
+            height: dp(50)
+            pos_hint: {"x": 0.55, "top": 0.1}
+            on_release: app.go_back()
