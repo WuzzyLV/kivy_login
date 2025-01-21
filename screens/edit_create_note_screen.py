@@ -5,6 +5,7 @@ from kivymd.uix.button import MDRaisedButton
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.dropdownitem import MDDropDownItem
 from kivymd.uix.pickers import MDColorPicker
+from utils.misc_utils import error_popup
 
 Builder.load_file('screens/edit_create_note_screen.kv')
 
@@ -43,6 +44,10 @@ class EditCreateNoteScreen(Screen):
         note_text = self.ids.note_input.text
         category = self.ids.category_spinner.text
         color = self.color
+
+        if not note_text or not category or not color:
+            error_popup("All fields are required!")
+            return
         self.save_callback(self.note_uuid, note_text, category, color)
     
     def close(self):
