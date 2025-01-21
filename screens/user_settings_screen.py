@@ -10,13 +10,21 @@ Builder.load_file('screens/user_settings_screen.kv')
 
 class UserSettingsScreen(Screen):
     current_user = ObjectProperty(None)
+    register_mode = ObjectProperty(False)
 
     def on_enter(self):
-        self.ids.username_input.text = self.current_user['username']
-        self.ids.password_input.text = self.current_user['password']
+        if not self.register_mode:
+            self.ids.username_input.text = self.current_user['username']
+            self.ids.password_input.text = self.current_user['password']
+        else:
+            self.ids.username_input.text = ''
+            self.ids.password_input.text = ''
     def save_settings(self):
         new_username = self.ids.username_input.text
         new_password = self.ids.password_input.text
+        if self.register_mode:
+            self.register_logic(new_username, new_password)
+            return
         if not new_username or not new_password:
             error_popup('Username and password cannot be empty.')
             self.on_enter()
@@ -36,5 +44,22 @@ class UserSettingsScreen(Screen):
         # Go back to the previous screen
         self.manager.current = 'main'
 
+    def register_logic(self, username, password):
+        if not username or not password:
+            error_popup('Username and password cannot be empty.')
+            return
+        try:
+            try:
+                user_utils.create_user(username, password)
+            except ValueError as e:
+                error_popup(f'User with this username already exists')
+                return
+            self.manager.current = 'login'
+        except Exception as e:
+            error_popup(f'Error creating user: {e}')
+
     def go_back(self):
-        self.manager.current = 'main'
+        if self.register_mode:
+            self.manager.current = 'login'
+        else:
+            self.manager.current = 'main'

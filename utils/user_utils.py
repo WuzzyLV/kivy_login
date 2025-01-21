@@ -1,5 +1,6 @@
 import csv
 import os
+from uuid import uuid4
 
 # Path to the CSV file
 USERS_FILE = 'data/users.csv'
@@ -28,6 +29,38 @@ def get_user(username: str):
         except Exception as e:
             print(f"Error reading users file: {e}")
     return None
+
+def create_user(username: str, password: str):
+    if get_user(username):
+        raise ValueError("User with this username already exists.")
+
+    user_uuid = str(uuid4())
+    new_user = {
+        'uuid': user_uuid,
+        'username': username,
+        'password': password
+    }
+
+    if os.path.exists(USERS_FILE):
+        try:
+            with open(USERS_FILE, 'a', encoding='utf-8', newline='') as file:
+                fieldnames = ['uuid', 'username', 'password']
+                writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter='\t')
+                writer.writerow(new_user)
+                print(f"Created new user {username}")
+        except Exception as e:
+            print(f"Error writing to users file: {e}")
+    else:
+        try:
+            with open(USERS_FILE, 'w', encoding='utf-8', newline='') as file:
+                fieldnames = ['uuid', 'username', 'password']
+                writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter='\t')
+                writer.writeheader()
+                writer.writerow(new_user)
+                print(f"Created new user {username}")
+        except Exception as e:
+            print(f"Error creating users file: {e}")
+
 
 def change_password(user_uuid: str, new_password: str):
     """Change the password of a user identified by their UUID."""

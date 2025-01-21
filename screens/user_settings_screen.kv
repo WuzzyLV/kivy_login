@@ -20,7 +20,7 @@
 
 
             Label:
-                text: "User Settings"
+                text: "Register" if root.register_mode else "User Settings"
                 font_size: '24sp'
                 size_hint_y: None
                 height: dp(40)
@@ -70,7 +70,7 @@
                 spacing: dp(10)
 
                 RoundedButton:
-                    text: "Save"
+                    text: "Register" if root.register_mode else "Save"
                     on_release: root.save_settings()
 
                 RoundedButton:

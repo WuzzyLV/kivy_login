@@ -29,3 +29,9 @@ class LoginWindow(Screen):
             self.manager.current = 'main'
         else:
             print("Login failed!")
+
+    def register_button(self):
+        settings_screen = self.manager.get_screen('settings')
+        settings_screen.register_mode = True
+        self.manager.current = 'settings'
+        pass
