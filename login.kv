@@ -97,6 +97,7 @@
             bold: True
             halign: 'left'
 
+
         # Lietotāja vārda ievades lauks
         RoundedTextInput:
             id: username
@@ -108,6 +109,8 @@
             hint_text: 'Ievadi lietotājvārdu'
             foreground_color: 0.2, 0.4, 0.8, 1
             hint_text_color: 0.5, 0.6, 0.8, 1
+            # TODO: change me
+            text: 'user1'
 
         # Uzraksts "Parole"
         Label:
@@ -131,6 +134,8 @@
             hint_text: 'Ievadi paroli'
             foreground_color: 0.2, 0.4, 0.8, 1
             hint_text_color: 0.5, 0.6, 0.8, 1
+           # TODO: change me
+            text: '1'
 
         # Poga
         RoundedButton:
@@ -144,27 +149,25 @@
 
 # Galvenais logs pēc autorizācijas
 <MainWindow>:
-    # Elementu ID savienošana ar klases īpašībām
-    new_password: new_password
 
-    # Loga fons
+    # Background
     canvas.before:
         Color:
-            rgba: (0.85, 0.95, 1, 1)  # Gaišzils
+            rgba: (0.85, 0.95, 1, 1)  # Light blue
         Rectangle:
             pos: self.pos
             size: self.size
 
-    # Vidžetu konteineris
+    # Widget container
     FloatLayout:
         size: root.width, root.height
 
-        # Sveiciena uzraksts ar lietotājvārdu
+        # Welcome text with username
         Label:
             text: root.welcome_text
             pos_hint: {"x": 0, "top": 0.95}
             size_hint: 1, 0.15
-            font_size: min(root.width, root.height) * 0.08
+            font_size: min(root.width, root.height) * 0.06
             color: 0.2, 0.4, 0.8, 1
             bold: True
             canvas.before:
@@ -174,43 +177,32 @@
                     pos: self.pos
                     size: self.size
 
-        # Uzraksts "Jauna Parole"
-        Label:
-            text: "Jauna Parole:"
-            pos_hint: {"x": 0.1, "top": 0.7}
-            size_hint: 0.8, 0.1
-            font_size: min(root.width, root.height) * 0.06
-            color: 0.2, 0.4, 0.8, 1
-            bold: True
-            halign: 'left'
+        # Scrollable view for notes
+        ScrollView:
+            size_hint: 0.9, 0.7
+            pos_hint: {"center_x": 0.5, "y": 0.15}
+            do_scroll_x: False  # Only scroll vertically
+            do_scroll_y: True
+            bar_width: 10
 
-        # Jaunas paroles ievades lauks
-        RoundedTextInput:
-            id: new_password
-            multiline: False
-            password: True
-            pos_hint: {"x": 0.1, "top": 0.6}
-            size_hint: 0.8, 0.1
-            font_size: min(root.width, root.height) * 0.05
-            padding: [20, 20]
-            hint_text: 'Ievadi jauno paroli'
-            foreground_color: 0.2, 0.4, 0.8, 1
-            hint_text_color: 0.5, 0.6, 0.8, 1
+            BoxLayout:
+                id: notes_container
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: 10
 
-        # Paroles maiņas poga
-        RoundedButton:
-            text: "Mainīt paroli"
-            pos_hint: {"x": 0.2, "y": 0.4}
-            size_hint: 0.6, 0.1
-            font_size: min(root.width, root.height) * 0.06
-            on_release:
-                root.change_password()
+                # Example placeholder content
+                Label:
+                    text: "Add your notes here"
+                    size_hint_y: None
+                    height: 40
 
-        # Izlogošanās poga
+        # Logout button
         RoundedButton:
             text: "Izlogoties"
-            pos_hint: {"x": 0.2, "y": 0.15}
-            size_hint: 0.6, 0.1
-            font_size: min(root.width, root.height) * 0.06
+            pos_hint: {"right": 1, "top": 1}
+            size_hint: 0.2, 0.05
+            font_size: min(root.width, root.height) * 0.03
             on_release:
                 root.logout_button()

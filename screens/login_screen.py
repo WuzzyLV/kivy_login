@@ -3,13 +3,17 @@ from kivy.properties import ObjectProperty
 from utils import user_utils
 
 class LoginWindow(Screen):
+    user = ObjectProperty(None)
     username = ObjectProperty(None)
     password = ObjectProperty(None)
     
     def verify_user(self, username, password):
         try:
             row = user_utils.get_user(username)
-            return row is not None and row['password'] == password
+            if row is not None and row['password'] == password:
+                self.user = row
+                return True
+            return False
         except Exception as e:
             print(f"Error reading CSV file: {e}")
             return False
@@ -18,7 +22,8 @@ class LoginWindow(Screen):
         if self.verify_user(self.username.text, self.password.text):
             print("Login successful!")
             main_screen = self.manager.get_screen('main')
-            main_screen.current_user = self.username.text
+            print(f"Current user: {self.user}")
+            main_screen.current_user = self.user
             main_screen.update_welcome_text()
             self.username.text = ''
             self.password.text = ''

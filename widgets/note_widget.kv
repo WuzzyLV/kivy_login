@@ -1,0 +1,32 @@
+#:kivy 1.0
+<NoteWidget>:
+    orientation: 'horizontal'
+    size_hint_y: None
+    height: 40
+    padding: [10, 10, 10, 10]
+
+    # Label to display the note text
+    Label:
+        id: note_label
+        text: root.note_text
+        color: root.hex_to_rgb(root.note_color)
+        size_hint_x: 0.8
+        valign: 'middle'
+        halign: 'left'
+        text_size: self.width, None
+
+    # Edit Button
+    Button:
+        text: 'Edit'
+        size_hint_x: 0.1
+        on_press: root.on_edit()
+        background_normal: ''
+        background_color: 0.2, 0.6, 1, 1
+
+    # Delete Button
+    Button:
+        text: 'Delete'
+        size_hint_x: 0.1
+        on_press: root.on_delete()
+        background_normal: ''
+        background_color: 1, 0.2, 0.2, 1
