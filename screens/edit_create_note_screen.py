@@ -16,10 +16,10 @@ class EditCreateNoteScreen(Screen):
     save_callback = ObjectProperty(None)
 
     def set_initial_values(self, note_text="", category="", color="#FFFFFF"):
-        """Initialize the screen with values."""
         self.ids.note_input.text = note_text
         self.ids.color_picker.text = color
-        self.ids.category_dropdown.set_item(category)
+        self.ids.category_spinner.text = category
+
 
     def change_color(self):
         color = self.ids.color_picker.text
@@ -36,12 +36,17 @@ class EditCreateNoteScreen(Screen):
         self.ids.color_picker.text = value
         self.change_color()
 
+    def open_category_menu(self):
+        self.ids.category_dropdown.open()
+
     def save_note(self):
-        """Invoke the callback to save the note."""
         note_text = self.ids.note_input.text
-        category = self.ids.category_dropdown.current_item
+        category = self.ids.category_spinner.text
         color = self.color
         self.save_callback(self.note_uuid, note_text, category, color)
+    
+    def close(self):
+        self.manager.current = 'main'
 
     def hex_to_rgb(self, hex_color):
         hex_color = hex_color.lstrip('#')

@@ -25,6 +25,7 @@ class NoteWidget(BoxLayout):
         self.category = note["category"]
         self.delete_callback = delete_callback
         self.edit_callback = edit_callback
+        self.ids.note_image.source = f"assets/{self.category.lower()}.png"
 
     def on_delete(self):
         """Handle the delete button click."""
@@ -33,40 +34,12 @@ class NoteWidget(BoxLayout):
     def on_edit(self):
         """Handle the edit button click."""
         self.edit_callback(self.note )
-        
-    def show_edit_popup(self):
-        """Show a popup for editing the note."""
-        content = FloatLayout()
-
-        note_input = TextInput(
-            text=self.note_text,
-            size_hint=(0.8, 0.2),
-            pos_hint={"center_x": 0.5, "center_y": 0.6}
-        )
-        save_button = Button(
-            text="Save",
-            size_hint=(0.3, 0.1),
-            pos_hint={"center_x": 0.5, "center_y": 0.2},
-            on_press=lambda x: self.save_edited_note(note_input.text)
-        )
-
-        content.add_widget(note_input)
-        content.add_widget(save_button)
-
-        self.popup = Popup(
-            title="Edit Note",
-            content=content,
-            size_hint=(0.6, 0.4),
-            auto_dismiss=True
-        )
-        self.popup.open()
 
     def save_edited_note(self, new_text):
         """Save the edited note text."""
         self.note_text = new_text
         self.ids.note_label.text = new_text
         self.edit_callback(self.note_uuid, new_text)
-        self.popup.dismiss()
 
     def hex_to_rgb(self, hex_color):
         """Convert hex color string to RGB tuple."""

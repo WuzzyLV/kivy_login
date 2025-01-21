@@ -1,4 +1,6 @@
+#!text
 #:kivy 1.0
+#:import Factory kivy.factory.Factory
 
 <EditCreateNoteScreen>:
     FloatLayout:
@@ -10,14 +12,23 @@
             multiline: True
             size_hint: 0.9, 0.3
             pos_hint: {"center_x": 0.5, "top": 0.75}
-
-        MDDropDownItem:
-            id: category_dropdown
+            halign: 'auto'  # Teksta centrēšana (horizontāli)
+ 
+        Label:
+            text: "Category"
+            size_hint: 0.9, None
+            height: dp(40)
+            pos_hint: {"center_x": 0.15, "top": 0.45}
+            color: (0.2, 0.2, 0.2, 1)
+            font_size: "16sp"
+        Spinner:
+            id: category_spinner
             text: "Select Category"
-            size_hint: 0.6, None
+            values: ["Work", "School", "Personal"]
+            size_hint: 0.9, None
             height: dp(40)
             pos_hint: {"center_x": 0.5, "top": 0.4}
-            on_release: app.open_category_menu()
+            background_color: (1, 1, 1, 1)
 
         BoxLayout:
             orientation: "horizontal"
@@ -53,8 +64,8 @@
             on_release: root.save_note()
 
         RoundedButton:
-            text: "Cancel"
+            text: "Back"
             size_hint: 0.4, None
             height: dp(50)
             pos_hint: {"x": 0.55, "top": 0.1}
-            on_release: app.go_back()
+            on_release: root.close()

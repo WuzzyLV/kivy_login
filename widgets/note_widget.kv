@@ -1,11 +1,20 @@
 #:kivy 1.0
+#:import images_path kivymd.images_path
+
 <NoteWidget>:
     orientation: 'horizontal'
     size_hint_y: None
-    height: 40
-    padding: [10, 10, 10, 10]
+    height: dp(40)
+    padding: [dp(10), dp(10), dp(10), dp(10)]
+    spacing: dp(10)
 
-    # Label to display the note text
+    Image:
+        id: note_image
+        size_hint_x: 0.2
+        allow_stretch: True
+        keep_ratio: True
+        opacity: 0.8
+        padding: [0, 0, 0, dp(20)]
     Label:
         id: note_label
         text: root.note_text
@@ -14,6 +23,8 @@
         valign: 'middle'
         halign: 'left'
         text_size: self.width, None
+
+
 
     # Edit Button
     Button:
