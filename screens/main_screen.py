@@ -19,12 +19,9 @@ class MainWindow(Screen):
         notes_container = self.ids.notes_container
         notes_container.clear_widgets()
 
-        example_notes = [
-            {"uuid": str(uuid4()), "note": "My first note", "color": "#FF5733"},
-            {"uuid": str(uuid4()), "note": "Another important note", "color": "#33FF57"}
-        ]
+        notes = notes_utils.get_notes_for_user(self.current_user["uuid"])
         
-        for note in example_notes:
+        for note in notes:
             note_widget = NoteWidget(
                 note_uuid=note["uuid"],
                 note_text=note["note"],

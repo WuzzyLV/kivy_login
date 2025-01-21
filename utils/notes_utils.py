@@ -52,3 +52,38 @@ def add_note_to_user(user_uuid: str, note: str, color: str, category: str):
     except Exception as e:
         print(f"Error adding note for user {user_uuid}: {e}")
 
+def get_notes_for_user(user_uuid: str):
+    notes_file_path = ensure_user_notes_file_exists(user_uuid)
+    notes = []
+
+    try:
+        with open(notes_file_path, 'r', encoding='utf-8') as file:
+            reader = csv.DictReader(file, delimiter='\t')
+            for row in reader:
+                notes.append(row)
+            print(f"Retrieved notes for user {user_uuid}")
+    except Exception as e:
+        print(f"Error retrieving notes for user {user_uuid}: {e}")
+
+    return notes
+
+
+def delete_note_for_user(user_uuid: str, note_uuid: str):
+    notes_file_path = ensure_user_notes_file_exists(user_uuid)
+    notes = []
+
+    try:
+        with open(notes_file_path, 'r', encoding='utf-8') as file:
+            reader = csv.DictReader(file, delimiter='\t')
+            for row in reader:
+                if row['uuid'] != note_uuid:
+                    notes.append(row)
+
+        with open(notes_file_path, 'w', encoding='utf-8', newline='') as file:
+            fieldnames = ['uuid', 'note', 'color', 'created_at', 'category']
+            writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter='\t')
+            writer.writeheader()
+            writer.writerows(notes)
+            print(f"Deleted note {note_uuid} for user {user_uuid}")
+    except Exception as e:
+        print(f"Error deleting note {note_uuid} for user {user_uuid}: {e}")
