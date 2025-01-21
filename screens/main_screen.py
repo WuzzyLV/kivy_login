@@ -92,6 +92,7 @@ class MainWindow(Screen):
     def settings_button(self):
         settings_screen = self.manager.get_screen('settings')
         settings_screen.current_user = self.current_user
+        settings_screen.register_mode = False
         self.manager.current = 'settings'
 
     def logout_button(self):

@@ -15,18 +15,21 @@ class UserSettingsScreen(Screen):
     def on_enter(self):
         if not self.register_mode:
             self.ids.username_input.text = self.current_user['username']
-            self.ids.password_input.text = self.current_user['password']
         else:
             self.ids.username_input.text = ''
             self.ids.password_input.text = ''
+
+    def on_leave(self):
+        self.ids.username_input.text = ''
+        self.ids.password_input.text = ''
     def save_settings(self):
         new_username = self.ids.username_input.text
         new_password = self.ids.password_input.text
         if self.register_mode:
             self.register_logic(new_username, new_password)
             return
-        if not new_username or not new_password:
-            error_popup('Username and password cannot be empty.')
+        if not new_username or not new_password or new_password == '':
+            error_popup('Nothing has changed.')
             self.on_enter()
             return
 
@@ -49,14 +52,15 @@ class UserSettingsScreen(Screen):
             error_popup('Username and password cannot be empty.')
             return
         try:
-            try:
-                user_utils.create_user(username, password)
-            except ValueError as e:
-                error_popup(f'User with this username already exists')
-                return
-            self.manager.current = 'login'
-        except Exception as e:
-            error_popup(f'Error creating user: {e}')
+            user_utils.create_user(username, password)
+        except ValueError as e:
+            error_popup(f'User with this username already exists')
+            return
+        main_screen = self.manager.get_screen('main')
+        main_screen.current_user = user_utils.get_user(username)
+        main_screen.update_welcome_text()
+        self.manager.current = 'main'
+
 
     def go_back(self):
         if self.register_mode:

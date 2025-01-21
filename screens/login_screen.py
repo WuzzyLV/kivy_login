@@ -1,6 +1,7 @@
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 from utils import user_utils
+from utils.misc_utils import error_popup
 
 class LoginWindow(Screen):
     user = ObjectProperty(None)
@@ -19,7 +20,8 @@ class LoginWindow(Screen):
             return False
 
     def login_button(self):
-        if self.verify_user(self.username.text, self.password.text):
+        if user_utils.check_password(self.username.text, self.password.text):
+            self.user = user_utils.get_user(self.username.text)
             main_screen = self.manager.get_screen('main')
             print(f"Current user: {self.user}")
             main_screen.current_user = self.user
@@ -28,6 +30,7 @@ class LoginWindow(Screen):
             self.password.text = ''
             self.manager.current = 'main'
         else:
+            error_popup('Login failed!')
             print("Login failed!")
 
     def register_button(self):
