@@ -89,6 +89,11 @@ class MainWindow(Screen):
         self.ids.date_icon.source = "assets/up.png" if self.sort_order else "assets/down.png"
         self.load_notes(sort_by="date")
 
+    def settings_button(self):
+        settings_screen = self.manager.get_screen('settings')
+        settings_screen.current_user = self.current_user
+        self.manager.current = 'settings'
+
     def logout_button(self):
         self.current_user = {}
         self.welcome_text = "Welcome!"

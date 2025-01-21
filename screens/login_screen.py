@@ -20,7 +20,6 @@ class LoginWindow(Screen):
 
     def login_button(self):
         if self.verify_user(self.username.text, self.password.text):
-            print("Login successful!")
             main_screen = self.manager.get_screen('main')
             print(f"Current user: {self.user}")
             main_screen.current_user = self.user

@@ -266,9 +266,18 @@
 
         # Logout button
         RoundedButton:
-            text: "Izlogoties"
+            text: "Logout"
             pos_hint: {"right": 1, "top": 1}
             size_hint: 0.2, 0.05
             font_size: min(root.width, root.height) * 0.03
             on_release:
                 root.logout_button()
+
+        # settings
+        RoundedButton:
+            text: "Settings"
+            pos_hint: {"left": 0.8, "top": 1}
+            size_hint: 0.2, 0.05
+            font_size: min(root.width, root.height) * 0.03
+            on_release:
+                root.settings_button()

@@ -6,7 +6,7 @@ from kivy.core.window import Window
 from kivy.utils import platform
 from kivy.config import Config
 from kivy.uix.screenmanager import ScreenManager
-from screens import LoginWindow, EditCreateNoteScreen
+from screens import UserSettingsScreen, EditCreateNoteScreen
 
 Config.set('input', 'mouse', 'mouse, multitouch_on_demand')
 Config.set('kivy', 'mouse cursor enable', 1)
@@ -23,6 +23,7 @@ class LoginApp(MDApp):
             Window.fullscreen = 'auto'
         manager = WindowManager()
         manager.add_widget(EditCreateNoteScreen(name='edit_create_note'))
+        manager.add_widget(UserSettingsScreen(name='settings'))
         return manager
     
 
