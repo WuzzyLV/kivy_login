@@ -19,8 +19,6 @@ class LoginApp(App):
         if platform in ('android', 'ios'):
             Window.fullscreen = 'auto'
         manager = WindowManager()
-        # manager.add_widget(LoginWindow(name='login'))
-        # manager.add_widget(MainWindow(name='main'))
         return manager
 
 if __name__ == '__main__':

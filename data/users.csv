@@ -1,4 +1,3 @@
-username	password
-admin	123456
-user1	1
-user2	123456
+uuid    username	password
+123e4567-e89b-12d3-a456-426614174000    user1	1
+
