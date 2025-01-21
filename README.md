@@ -1,11 +1,28 @@
-## TODO:
+# Quick start
 
-Convert users to use UUIDs
+`pip install -r .\requirements.txt`
 
-- [ ] Create utils for note storage
-- [x] Create widget for each note
-- [ ] Create delete functionality for note
-- [ ] Create note editing screen
-  - [ ] Edit message
-  - [ ] Create color selection
-  - [ ] Create category selection
+### Base user:
+
+- username: `user1`
+- password: `1`
+
+## Features:
+
+### Extras:
+
+- Categories for notes
+- Icon based on category
+- Notes colors
+- Sorting by date and name, click arrow down
+- User settings, can change password, username
+- Sign up
+- Passwords are hashed
+
+### Minimum:
+
+- Auth
+- Note creation
+- Note overview
+- Note Editing
+- Note Deleting
