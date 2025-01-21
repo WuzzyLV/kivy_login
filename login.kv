@@ -1,0 +1,216 @@
+#:kivy 1.0
+
+<WindowManager>:
+    LoginWindow:
+        name: 'login'
+    MainWindow:
+        name: 'main'
+
+<RoundedTextInput@TextInput>:
+    background_color: 0, 0, 0, 0  # Caurspidīgs fons
+    halign: 'center'  # Teksta centrēšana (horizontāli)
+    valign: 'center'  # Teksta centrēšana (vertikāli)
+    padding_y: [self.height / 2.0 - (self.line_height / 2.0) * len(self._lines), 0]  # Atkāpes centrēšanai
+    cursor_color: 0.2, 0.4, 0.8, 1  # Kursora krāsa
+    cursor_width: '2sp'  # Kursora biezums
+    canvas.before:
+        # Fons izvades laukam
+        Color:
+            rgba: 1, 1, 1, 1  # Balta krāsa fonam
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [15]  # Noapaļoti stūri
+        # Fokusa efeks ar rami
+        Color:
+            rgba: (0.3, 0.6, 0.9, 1) if self.focus else (0.8, 0.8, 0.8, 1)  # Krāsa fokusam mainās
+        Line:
+            rounded_rectangle: (self.x, self.y, self.width, self.height, 15)
+            width: 1.5 if self.focus else 1.2  # Ramja biezuma maiņa kad ir fokusēts
+    selection_color: 0.3, 0.6, 0.9, 0.4  # Iezimētā teksta krāsas maiņa
+
+# Pogas izveide ar nospiešanas efektu
+<RoundedButton@Button>:
+    background_color: 0, 0, 0, 0  # Caurspidīgs fons
+    cursor_name: 'hand'  # Changes cursor to pointing hand
+    pressed: False  # Pogas statuss (nenospiesta/nospiesta)
+    canvas.before:
+        # Pamat krāsa pogai
+        Color:
+            rgba: (0.4, 0.7, 1, 1) if not self.pressed else (0.3, 0.6, 0.9, 1)  # Krāsa kad poga ir nospiesta
+        RoundedRectangle:
+            pos: self.pos[0], self.pos[1] + (-2 if self.pressed else 0)  # Pogas nospiešanas efekts
+            size: self.size
+            radius: [20]
+        # Pogas ēna
+        Color:
+            rgba: (0.3, 0.6, 0.9, 1)
+        RoundedRectangle:
+            pos: self.x, (self.y - 3) if not self.pressed else (self.y - 1)  # Ēna samazinas kad poga ir nospiesta
+            size: self.width, self.height
+            radius: [20]
+    on_press: 
+        self.pressed = True  # Nospiešanai
+    on_release: 
+        self.pressed = False  # Atspiešanai
+
+# Autorizācijas logs
+<LoginWindow>:
+    # Elementu ID savienošana ar klases īpašībām
+    username: username
+    password: password
+
+    # Loga fons
+    canvas.before:
+        Color:
+            rgba: (0.85, 0.95, 1, 1)  # Gaišzils
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # Vidžetu konteineris
+    FloatLayout:
+        size: root.width, root.height
+
+        # Uzraksts "LOGIN FORM"
+        Label:
+            text: "LOGIN FORM"
+            pos_hint: {"x": 0, "top": 0.95}
+            size_hint: 1, 0.15
+            font_size: min(root.width, root.height) * 0.1
+            color: 0.2, 0.4, 0.8, 1  # Teksta krāsa
+            bold: True
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 0.5
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+        # Uzraksts "Lietotājvārds"
+        Label:
+            text: "Lietotājvārds:"
+            pos_hint: {"x": 0.1, "top": 0.75}
+            size_hint: 0.8, 0.1
+            font_size: min(root.width, root.height) * 0.06
+            color: 0.2, 0.4, 0.8, 1
+            bold: True
+            halign: 'left'
+
+        # Lietotāja vārda ievades lauks
+        RoundedTextInput:
+            id: username
+            multiline: False
+            pos_hint: {"x": 0.1, "top": 0.65}
+            size_hint: 0.8, 0.1
+            font_size: min(root.width, root.height) * 0.05
+            padding: [20, 20]
+            hint_text: 'Ievadi lietotājvārdu'
+            foreground_color: 0.2, 0.4, 0.8, 1
+            hint_text_color: 0.5, 0.6, 0.8, 1
+
+        # Uzraksts "Parole"
+        Label:
+            text: "Parole:"
+            pos_hint: {"x": 0.1, "top": 0.5}
+            size_hint: 0.8, 0.1
+            font_size: min(root.width, root.height) * 0.06
+            color: 0.2, 0.4, 0.8, 1
+            bold: True
+            halign: 'left'
+
+        # Paroles ievades lauks
+        RoundedTextInput:
+            id: password
+            multiline: False
+            password: True
+            pos_hint: {"x": 0.1, "top": 0.4}
+            size_hint: 0.8, 0.1
+            font_size: min(root.width, root.height) * 0.05
+            padding: [20, 20]
+            hint_text: 'Ievadi paroli'
+            foreground_color: 0.2, 0.4, 0.8, 1
+            hint_text_color: 0.5, 0.6, 0.8, 1
+
+        # Poga
+        RoundedButton:
+            text: "Pieslēgties"
+            pos_hint: {"x": 0.2, "top": 0.25}
+            size_hint: 0.6, 0.12
+            font_size: min(root.width, root.height) * 0.06
+            on_press: root.login_button()
+            color: 1, 1, 1, 1
+            bold: True
+
+# Galvenais logs pēc autorizācijas
+<MainWindow>:
+    # Elementu ID savienošana ar klases īpašībām
+    new_password: new_password
+
+    # Loga fons
+    canvas.before:
+        Color:
+            rgba: (0.85, 0.95, 1, 1)  # Gaišzils
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # Vidžetu konteineris
+    FloatLayout:
+        size: root.width, root.height
+
+        # Sveiciena uzraksts ar lietotājvārdu
+        Label:
+            text: root.welcome_text
+            pos_hint: {"x": 0, "top": 0.95}
+            size_hint: 1, 0.15
+            font_size: min(root.width, root.height) * 0.08
+            color: 0.2, 0.4, 0.8, 1
+            bold: True
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 0.5
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+        # Uzraksts "Jauna Parole"
+        Label:
+            text: "Jauna Parole:"
+            pos_hint: {"x": 0.1, "top": 0.7}
+            size_hint: 0.8, 0.1
+            font_size: min(root.width, root.height) * 0.06
+            color: 0.2, 0.4, 0.8, 1
+            bold: True
+            halign: 'left'
+
+        # Jaunas paroles ievades lauks
+        RoundedTextInput:
+            id: new_password
+            multiline: False
+            password: True
+            pos_hint: {"x": 0.1, "top": 0.6}
+            size_hint: 0.8, 0.1
+            font_size: min(root.width, root.height) * 0.05
+            padding: [20, 20]
+            hint_text: 'Ievadi jauno paroli'
+            foreground_color: 0.2, 0.4, 0.8, 1
+            hint_text_color: 0.5, 0.6, 0.8, 1
+
+        # Paroles maiņas poga
+        RoundedButton:
+            text: "Mainīt paroli"
+            pos_hint: {"x": 0.2, "y": 0.4}
+            size_hint: 0.6, 0.1
+            font_size: min(root.width, root.height) * 0.06
+            on_release:
+                root.change_password()
+
+        # Izlogošanās poga
+        RoundedButton:
+            text: "Izlogoties"
+            pos_hint: {"x": 0.2, "y": 0.15}
+            size_hint: 0.6, 0.1
+            font_size: min(root.width, root.height) * 0.06
+            on_release:
+                root.logout_button()
